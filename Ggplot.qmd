@@ -1,0 +1,323 @@
+---
+title: "GGPLOT"
+author: "Brayan Aguilar"
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    toc: true
+    toc_float: true
+    number-sections: true
+    code-fold: show
+    code-tools: true
+    code-copy: hover
+    code-overflow: wrap
+    embed-resources: true
+reference-location: margin
+lang: es
+editor: visual
+---
+# Introducción
+En este documento aprenderemos los diferentes tipos de visualización, los cuales nos ayuda a interpretar el comportamiento de los datos en diferentes aspectos, claro que si implementaremos un tipo de lenguaje llamado "lattice" el cual nos ayudara a ser mas pulido los gráficos e interactua mejor con grupos de información.
+
+## Ejercicio 1
+
+```{r}
+library(ggplot2)
+students <- data.frame(
+ id = 1:20,
+ hours_study = c(2,3,4,5,6,3,4,7,8,5,6,7,3,2,9,10,4,6,8,5),
+ score = c(50,55,65,70,75,60,66,80,85,72,74,78,58,52,90,95,67,76,88,73),
+ gender = rep(c("Male","Female"), 10),
+ major = rep(c("Engineering","Business","Arts","Science"), 5))
+```
+```{r}
+ggplot(students, aes(hours_study, score)) +
+  geom_point()
+
+```
+Las variables en resumidas cuentas son las siguientes:
+
+1. hours_study → horas de estudio
+
+2. score → nota
+
+3. gender → género
+
+4. major → carrera
+
+### Interpretación 
+- Primero el código lo que realiza es una gráfica de dispersión donde cada punto es un estudiante con respecto a su nota.
+- Al denotarla vemos que entre mas horas de estudio se dedique su nota sera mucho mejor es directamente proporcional.
+
+```{r}
+ggplot(students, aes(hours_study, score)) +aes(color = gender)+
+  geom_point()
+
+```
+- El cambio de color con el nuevo elemento nos ayuda a clasificar por genero, y se agrega esto `aes(color = gender)`.
+
+- Y la particuliralidad acá es que los dos muestran un patrón similar entonces por ser de diferente genero no cambia determinadas condiciones.
+
+```{r}
+ggplot(students, aes(hours_study, score)) +aes(color = gender)+
+  geom_point()+labs(title = "Grafica estudiantes", x = "Horas de estudio", y = "Notas")
+
+```
+
+- Solo se agrega `(labs(title = "Grafica estudiantes", x = "Horas ide estudio", y = "Notas"))` , pero es cuestión de presentación.
+
+```{r}
+ggplot(students, aes(hours_study, score))+ 
+  aes(color = gender)+ 
+  geom_point()+ 
+  labs(title = "Grafica estudiantes", x = "Horas de estudio", y = "Notas")+ 
+  geom_smooth(method = "lm", se = FALSE)
+```
+- Con `geom_smooth(method = "lm", se = FALSE)`, dibuja una linea que traza la mayo cantidad de datos tipo regresión.
+- Al observar la linea en resumidas cuentas tiene una tendencia positiva entre las notas y las horas de estudio.
+
+```{r}
+ggplot(students, aes(gender, score)) +
+  geom_boxplot()+
+  facet_wrap(~ major)
+```
+- La caja representa la variabilidad de los datos, si es grande mas disperso, si es pequeño mas concreto lo datos en un puntaje.
+Lo bonito de este gráfico es que determina la carrera o facultad en especifico con el genero. En Artes vemos que los datos o notas son muchos mas amplios mientras que en ciencias se concentran un poco mas. Lo curioso es que el punto negrito que observamos son los denominados datos atípicos, un puntaje muy alto respecto al grupo.
+
+## Ejercicio 2 BUSINESS / SALES 
+```{r}
+library(ggplot2)
+sales <- data.frame(
+ month = rep(month.abb[1:12], 4),
+ region = rep(c("North","South","East","West"), each = 12),
+ sales = c(
+ 120,130,125,140,150,160,170,165,155,145,135,125,
+ 100,110,105,120,130,135,140,138,132,125,118,110,
+ 90,95,100,110,115,120,125,123,118,112,105,98,
+ 80,85,88,95,100,105,110,108,102,97,90,85
+ ),
+ marketing_spend = c(
+ 20,22,21,23,25,26,28,27,26,24,23,22,
+ 18,19,18,20,22,23,24,23,22,21,20,19,
+ 15,16,17,18,19,20,21,20,19,18,17,16,
+ 12,13,14,15,16,17,18,17,16,15,14,13
+ ),
+ employees = rep(c(50,45,40,35), each = 12))
+```
+
+Variables:
+
+1. marketing_spend = Gasto de marketing.
+
+2. sales = Ventas
+
+3. month = Mes
+
+4. region = Region
+
+5. employees = Empleados
+
+```{r}
+ggplot(sales, aes(marketing_spend, sales, color = region)) +
+  geom_point(size = 3, alpha = 0.7) +
+  labs(
+    title = "Relación entre inversión en marketing y ventas",
+    x = "Gasto en marketing",
+    y = "Ventas"
+  ) +
+  theme_minimal()
+```
+
+### Interpretación
+
+- Cada zona geográfica representa un nivel de dinamismo diferente y podemos ver los diferentes tipos de comportamiento que obtienen, al ver la tendencia que es creciente quiere decir que entre mayor inversión sus ventas serán aun mayores.
+
+```{r}
+ggplot(sales, aes(marketing_spend, sales, color = region)) +
+  geom_point(size = 3, alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "Tendencia de ventas según inversión en marketing",
+    x = "Gasto en marketing",
+    y = "Ventas"
+  ) +
+  theme_minimal()
+```
+
+- Aqui vemos la tendencia positiva mas clara de lo denominado anteriormente.
+
+```{r}
+ggplot(sales, aes(month, sales, group = region, color = region)) +
+  geom_line() +
+  geom_point(size = 2) +
+  labs(
+    title = "Evolución mensual de las ventas por región",
+    x = "Mes",
+    y = "Ventas"
+  ) +
+  theme_minimal()
+```
+- Cada región tiene un actividad económica diferente pero en la temporada mas o menos a mitad de año es beneficioso por que las ventas se proyectan en un valor alto, mientras que en diciembre se puede estipular que las ventas son mínimas por que no han invertido en ello.
+
+```{r}
+ggplot(sales, aes(region, sales, fill = region)) +
+  geom_boxplot(alpha = 0.7) +
+  labs(
+    title = "Distribución de ventas por región",
+    x = "Región",
+    y = "Ventas"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+-   La distribución de ventas de cada región es diferente, los del norte presentan un alto indice de ventas mientras que los de oeste no tanto. 
+
+```{r}
+ggplot(sales, aes(month, sales)) +
+  geom_line(color = "steelblue") +
+  geom_point() +
+  facet_wrap(~ region) +
+  labs(
+    title = "Ventas mensuales por región",
+    x = "Mes",
+    y = "Ventas"
+  ) +
+  theme_minimal()
+```
+- Es un poco mas detallado hasta por mes el comportamiento que da cada uno con su respectiva tendencia.
+
+## Ejercicio 3 — CUSTOMER CHURN
+
+```{r}
+churn <- data.frame(
+  tenure = c(1,5,10,12,24,36,48,60,72,3,6,9,15,18,30,42,54,66,70,8),
+  
+  monthly_charges = c(
+    70,75,80,85,90,95,100,105,110,65,
+    72,78,82,88,92,98,102,108,112,76),
+  
+  total_charges = c(
+    70,375,800,1020,2160,3420,4800,6300,7920,
+    195,432,702,1230,1584,2760,4116,5508,7128,7840,
+    608),
+  churn = rep(c("Yes", "No"), 10),
+   contract = rep(
+    c("Month-to-month", "One year", "Two year", "Month-to-month"),
+    5),
+internet_service = rep(
+    c("DSL", "Fiber optic", "DSL", "No"), 5))
+
+
+```
+
+```{r}
+ggplot(churn, aes(tenure, monthly_charges, color = churn)) +
+  geom_point(alpha = 0.6, size = 3) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Dark2") +
+  labs(
+    title = "Relación entre antigüedad del cliente y cargos mensuales",
+    ,
+    x = "Antigüedad del cliente (meses)",
+    y = "Cargos mensuales"
+  ) +
+  theme_minimal()
+```
+### Interpretación
+- Cargos mensuales no disminuyen a través del tiempo osea que la empresa mantiene precios estables.
+- La clientela que tienden a abandonar el servicio de igual manera los cargos mensuales siguen creciendo.
+```{r}
+ggplot(churn, aes(contract, monthly_charges, fill = churn)) +
+  geom_violin(alpha = 0.6, trim = FALSE) +
+  facet_wrap(~ churn) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    title = "Distribución de cargos mensuales por tipo de contrato",
+    x = "Tipo de contrato",
+    y = "Cargos mensuales"
+  ) +
+  theme_minimal()
+```
+- Este gráfico tipo violín nos ayuda a separar por decir los datos para ver mejor su comportamiento y que no se mezclen, y nos dice que los contratos mes a mes presentan mayores cargos y mayor probabilidad de churn mientras que contratos mas extensos muestras mas estabilidad con menor abandono.
+
+```{r}
+ggplot(churn, aes(contract, fill = churn)) +
+  geom_bar(position = "fill") +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    title = "Proporción de churn según tipo de contrato",
+    x = "Tipo de contrato",
+    y = "Proporción de clientes"
+  ) +
+  theme_minimal()
+```
+- Ya visualmente se ve mejor lo que quise decir, entre mas extenso el contrato mayor fidelizacion y menos riesgo de abandono.
+
+```{r}
+ggplot(churn, aes(tenure, total_charges)) +
+  geom_point(aes(size = monthly_charges, color = churn), alpha = 0.6) +
+  scale_size_continuous(range = c(2, 10)) +
+  labs(
+    title = "Relación entre antigüedad, cargos totales y churn",
+    x = "Antigüedad",
+    y = "Cargos totales",
+    size = "Cargos mensuales"
+  ) +
+  theme_minimal()
+```
+- Nuestro gráfico es un apoyo ya que entre mas grande la circunferencia es el nivel de cargos. Clientes por decirlo así con mayor antigüedad y altos cargos mensuales son los que obtienen mayores ingresos totales pero los que ya reciben buen monto o pago mensual son los que abandonan mas prematuramente.
+
+## Ejercicio 4 TELCO CUSTOMER
+
+```{r}
+library(readr)
+library(tidyverse)
+churn <- read_csv("WA_Fn-UseC_-Telco-Customer-Churn.csv")
+churn$Churn <- as.factor(churn$Churn)
+churn$Contract <- as.factor(churn$Contract)
+churn$InternetService <- as.factor(churn$InternetService)
+
+```
+- Si te preguntas como sacamos la data es a medida del código que esta en tipo url.
+
+```{r}
+ggplot(churn, aes(x = tenure)) +
+  geom_histogram(
+    bins = 30,
+    color = "white",
+    fill = "#2C7FB8",
+    alpha = 0.9
+  ) +
+  geom_vline(
+    aes(xintercept = mean(tenure, na.rm = TRUE)),
+    color = "firebrick",
+    linetype = "dashed",
+    linewidth = 1
+  ) +
+  labs(
+    title = "Distribución de la antigüedad de los clientes",
+    x = "Antigüedad del cliente (meses)",
+    y = "Número de clientes"
+  
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12, color = "gray40"),
+    axis.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank()
+  )
+```
+
+- En la gráfica vemos que a medida que pasa los meses en numero de clientes disminuye progresivamente.
+
+
+
+
+
+
+

@@ -1,0 +1,257 @@
+---
+title: "DPLYR"
+author: "Brayan Aguilar"
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    toc: true
+    toc_float: true
+    number-sections: true
+    code-fold: show
+    code-tools: true
+    code-copy: hover
+    code-overflow: wrap
+    embed-resources: true
+reference-location: margin
+lang: es
+editor: visual
+---
+
+```{r}
+
+```
+
+## INTRODUCCION
+Usando el conjunto de datos **gapminder** que comúnmente es acerca de información socioeconomica, vamos a realizar un análisis exploratorio adecuado.
+
+### Importamos la data
+
+```{r}
+library(dplyr)
+library(gapminder)
+
+```
+
+### Seleccionar columnas específicas
+```{r}
+gapminder %>%
+  select(country, year, lifeExp)
+
+```
+- Como la cantidad de variables de ese conjunto de datos es grande, lo que hacemos es filtrar a columnas que son realmente necesarias y asi no se confundan ciertas cosas, el análisis esta en la esperanza de vida a través del tiempo.
+
+
+### Observaciones 2007
+
+```{r}
+gapminder %>%
+  filter(year == 2007)
+```
+- El análisis se puede realizar en un año en especifico.
+
+
+### Asia
+
+```{r}
+gapminder %>%
+  filter(continent == "Asia")
+```
+- Con un enfoque tambien en un pais.
+
+### Esperanza de vida mayor a 70
+
+```{r}
+gapminder %>%
+  filter(lifeExp > 70)
+
+```
+- Podemos mirar que poblacion tiene un alto indice de esperanza de vida o longevidad, ya sea por buen cuidado a su salud y bienestar.
+
+### Ordenar
+
+```{r}
+gapminder %>%
+  arrange(lifeExp)
+```
+- Como nombre anteriormente da el énfasis en longevidad, de manera ascendente, menor a mayor.
+
+### Ordenar por PIB
+
+```{r}
+gapminder %>%
+  arrange(desc(gdpPercap))
+
+```
+- Ahora su organizacion depende del nivel socioeconomico que tenga cada pais.
+
+### Crear una nueva variable PIB
+
+```{r}
+gapminder %>%
+  mutate(gdp_total = gdpPercap * pop)
+
+```
+- Es el tamaño total economico de un pais.
+
+
+### Mayor población
+
+```{r}
+gapminder %>%
+  filter(year == 2007, pop > 100000000)
+
+```
+- En ese año específicamente el 2007 países que obtengan un mayor peso demográfico de mas de 100 millones de habitantes.
+
+### Países europeos - PIB
+
+```{r}
+gapminder %>%
+  filter(continent == "Europe") %>%
+  select(country, gdpPercap)
+
+```
+
+- Realiza una comparacion económica en especial con países europeos.
+
+### Promedio esperanza de vida
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarise(avg_lifeExp = mean(lifeExp))
+
+```
+
+- Nivel promedio de salud por continente se puede decir, resumiendo todos los datos obtenidos.
+
+### PIB - Promedio - Año
+```{r}
+gapminder %>%
+  group_by(continent, year) %>%
+  summarise(avg_gdpPercap = mean(gdpPercap))
+
+
+```
+- Aquí ya se une ciertos tipos de procesos como la evolución económica con una variable dependiente que es el tiempo en base al promedio. 
+
+### Maximo esperanza de vida
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarise(max_lifeExp = max(lifeExp))
+
+```
+
+- Ya no existe un orden ascendente o algo en especifico, en este se evalúa el valor máximo en cada región obviamente en esperanza de vida.
+
+### Numero de paises por continente
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarise(n_countries = n_distinct(country))
+
+```
+
+- Esto es interesante ya que examina la diversidad geográfica por continente. A simple vista vemos que áfrica posee gran cantidad de países.
+
+### Poblacion total
+
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarise(total_pop = sum(pop))
+
+```
+
+- Es obvio saber que entre mayor cantidad de países va ligado a si población es como decimos en matemáticas directamente proporcional.
+
+### Esperanza de vida promedio en América 
+
+
+```{r}
+gapminder %>%
+  filter(continent == "Americas") %>%
+  group_by(year) %>%
+  summarise(avg_lifeExp = mean(lifeExp))
+
+```
+- Longevidad a lo largo del tiempo en América, podremos realizar una inspección si mejora o no a partir de los años.
+
+### Ranking o top
+
+```{r}
+gapminder %>%
+  filter(year == 2007) %>%
+  arrange(desc(gdpPercap)) %>%
+  slice_head(n = 10)
+
+```
+- En este **filter**, llamemoslo así nos indica los países mas ricos ya que el PIB nos dice el nivel socioeconomico.
+Ten en cuenta que es del año 2007.
+
+### Salud
+
+```{r}
+gapminder %>%
+  group_by(year) %>%
+  slice_max(lifeExp, n = 1)
+
+```
+- En resumen paises lideres en salud.
+
+### Mediana PIB
+
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  summarise(median_gdpPercap = median(gdpPercap))
+
+```
+
+- En uno de los casos hallamos la media pero como otra medida central podemos fácilmente con la mediana.
+
+### Esperanza de vida (1952–2007)
+
+```{r}
+gapminder %>%
+  filter(year %in% c(1952, 2007)) %>%
+  select(country, year, lifeExp) %>%
+  tidyr::pivot_wider(names_from = year, values_from = lifeExp) %>%
+  mutate(change_lifeExp = `2007` - `1952`)
+
+```
+- Para ello se necesita instalar el paquete "tidyr", mide el progreso de longevidad a partir de ese lapso de tiempo, el cual se ve un impacto visible bastante grande.
+
+### Aumento PIB
+
+```{r}
+gapminder %>%
+  filter(year %in% c(1952, 2007)) %>%
+  select(country, year, gdpPercap) %>%
+  tidyr::pivot_wider(names_from = year, values_from = gdpPercap) %>%
+  mutate(change_gdp = `2007` - `1952`) %>%
+  arrange(desc(change_gdp)) %>%
+  slice_head(n = 5)
+
+```
+
+El argumento es básicamente el mismo que el anterior pero en vez de esperanza de vida es crecimiento económico a lo largo del tiempo establecido. Despues de eso establece los 5 con mayor incremento.
+
+### FINAL
+
+```{r}
+gapminder %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>%
+  summarise(avg_lifeExp = mean(lifeExp)) %>%
+  arrange(desc(avg_lifeExp))
+
+```
+
+- Ya existe un año y continente en especifico, compara el nivel de salud de cada región, siendo Oceanía el mayor y áfrica el menor, con eso uno puede especular el hecho de como se maneja el bienestar entre otras condiciones frente a la población.
+
+
+
+

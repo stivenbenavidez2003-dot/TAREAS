@@ -1,0 +1,204 @@
+---
+title: "Inter y Intravarianza"
+author: "Brayan Aguilar"
+format: 
+ html:
+  theme: 
+   light: flatly
+   dark: darkly
+  toc: true
+  toc_float: true
+  number-sections: true
+  code-fold: show
+  code-tools: true
+  code-copy: hover
+  code-overflow: wrap
+  embed-resources: true
+reference-location: margin
+lang: es
+editor: visual
+---
+
+## Datos suministrados
+
+```{r}
+mañana <- c(4.0, 3.5, 3.8, 3.6, 4.1)
+tarde  <- c(3.8, 3.5, 3.0, 2.9)
+noche  <- c(3.1, 2.5, 2.6)
+
+```
+### Número de datos grupo mañana, con su media y varianza respectiva:
+$$ 
+\large n=5
+$$
+
+$$ 
+\large x_{1} = \frac{4.0 + 3.5 + 3.8 + 3.6 + 4.1}{5} = 3.8
+$$
+
+$$
+\large s_2^{1}= \frac{(4.0 - 3.8)^2 +(3.5 - 3.8)^2 +(3.8 - 3.8)^2 +(3.6 - 3.8)^2 +(4.1 - 3.8)^2}{5}
+= 0.046
+$$
+
+### Número de datos grupo tarde, con su media y varianza respectiva: 
+$$ 
+\large n=4
+$$
+
+$$
+\large x_{2} = \frac{3.8 + 3.5 + 3.0 + 2.9}{4} = 3.3
+$$
+
+$$
+s_2^{2}
+= \frac{
+(3.8 - 3.3)^2 +
+(3.5 - 3.3)^2 +
+(3.0 - 3.3)^2 +
+(2.9 - 3.3)^2
+}{4}
+= 0.135
+$$ 
+
+### Número de datos grupo noche, con su media y varianza respectiva:
+$$
+\large n=3
+$$
+
+$$
+\large x_{3}=\frac{3.1 + 2.5 + 2.6}{3} = 2.7333
+$$
+
+$$
+\large s_3^{2}
+= \frac{
+(3.1 - 2.7333)^2 +
+(2.5 - 2.7333)^2 +
+(2.6 - 2.7333)^2
+}{3}
+= 0.0689
+$$
+
+### Media Total
+
+$$
+\large x_{T} = \frac{5(3.8) + 4(3.3) + 3(2.7333)}{12} = 3.3667
+$$
+
+#### Codigo en R 
+
+```{r}
+medias <- c(mean(mañana), mean(tarde), mean(noche))
+cat("Las medias son:\n",medias)
+
+
+
+n <- c(length(mañana), length(tarde), length(noche))
+cat("Numero de cantidades de cada grupo son:\n",n)
+
+
+
+var_p <- function(x) mean((x - mean(x))^2)
+
+varianzas <- c(
+  Mañana = var_p(mañana),
+  Tarde  = var_p(tarde),
+  Noche  = var_p(noche)
+)
+
+cat("Las varianzas son:\n",varianzas)
+
+
+
+## Media total
+media_total <- sum(medias * n) / sum(n)
+cat("Media total es:\n",media_total)
+
+
+```
+
+## Varianza de las medias
+
+$$
+\large Var_{M} = \frac{
+5(3.8 - 3.3667)^2 +
+4(3.3 - 3.3667)^2 +
+3(2.7333 - 3.3667)^2
+}{12}=0.18
+$$
+$$
+\large Var_{M}
+= \frac{5(3.8)^2 + 4(3.3)^2 + 3(2.7333)^2}{12}
+- (3.3667)^2
+= 0.18
+$$
+
+- Esta formula es un poco mas rapida y su valor da el mismo.
+
+#### Codigo en R 
+
+```{r}
+V_M <- weighted.mean((medias - weighted.mean(medias, n))^2, n)
+cat("La varianza de las medias es:\n",V_M)
+
+```
+- Este código que acabo de agregar nos ayuda a determinar rápidamente la varianza de las medias, ya que tenemos en forma de lista las medias de cada grupo con la cantidad que tiene.
+
+## Media de las varianzas
+
+$$
+\large M_{V}
+= \frac{s_1^2 + s_2^2 + s_3^2}{3}
+= \frac{0.052 + 0.135 + 0.0689}{3}
+= 0.0852963
+$$
+```{r}
+M_V <- mean(varianzas)
+cat("La media de la varianza es:\n",M_V)
+```
+
+## Conclusion
+
+- Al observar el valor de la intravarianza o también denominada **media de las varianzas** con un valor de 0.08 nos quiere decir que la variación dentro de cada grupo es mínima por tal las notas son homogéneas, en cada momento del día que son mañana, tarde y noche son parecidas.
+
+- Ahora al ver la intervarianza o también denominada **varianza de las medias** mide que tan diferentes son la media dentro de los grupos, con un valor de 0.18 que es mayor al anterior nos dice que la variabilidad es mas entre grupos que dentro de ellos, lo cual ejerce un impacto en los estudiantes el horario del día frente a sus notas.
+
+
+
+## Ejercicio
+
+```{r}
+x <- c(2, 5,7 ,4 ,10)
+y <- c(21, 18, 11, 5, 3)
+
+```
+
+#### Codigo en R 
+```{r}
+
+cov(x, y)
+cor(x, y)
+
+```
+
+## Conclusion
+- Al dar una covarianza negativa nos quiere decir que son inversamente proporcionales, es decir que mientras una suba la otra decrece.
+- Y el coeficiente de correlación el cual indica el grado de asociacion lineal nos dice que cuando se acerca a -1 tiene una relación fuerte lineal inversa. Osea que el valor de p o llamado rho es -0.686.
+
+```{r}
+
+library(ggplot2)
+datos <- data.frame(x, y)
+
+ggplot(datos, aes(x = x, y = y)) +
+  geom_point(color = "steelblue", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkred") +
+  labs( title = paste("Correlación de Pearson (ρ =", round(cor(x, y), 3), ")"),
+    x = "X",
+    y = "Y") +theme_minimal()
+
+
+```
+
+
