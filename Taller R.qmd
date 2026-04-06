@@ -1,0 +1,934 @@
+---
+title: "Taller R"
+author: "Brayan Aguilar"
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    toc: true
+    toc_float: true
+    number-sections: true
+    code-fold: show
+    code-tools: true
+    code-copy: hover
+    code-overflow: wrap
+    embed-resources: true
+reference-location: margin
+lang: es
+editor: visual
+---
+# Desarrollo de taller
+![](Captura.PNG)
+```{r}
+# 1) 1 + (√5) / 2
+1 + sqrt(5)/2
+
+# 2) 1 + 3.3 * log(50)
+1 + 3.3 * log(50)
+
+# 3) 1 − e^(-1)
+1 - exp(-1)
+
+# 4) 2 + 5^(1/3)
+2 + 5^(1/3)
+
+# 5) (5/2)
+5/2
+
+# 6) 1 / (1 + 1 / (1 + 1/2))
+1 / (1 + 1 / (1 + 1/2))
+
+# 7) 3 * √(1 + √(1 + 2))
+3 * sqrt(1 + sqrt(1 + 2))
+
+# 8) 1 + ln(1/2)
+1 + log(1/2)
+
+# 9) log base 2 de 8
+log(8, base = 2)
+
+# 10) sin(π)
+sin(pi)
+
+# 11) 10!
+factorial(10)
+
+# 12) (1 + √5 / 2)^(-1)
+(1 + sqrt(5)/2)^(-1)
+
+# 13) 2^3^4
+2^(3^4)
+
+# 14) (2^3)^4
+(2^3)^4
+
+# 15) 2^(3*4)
+2^(3*4)
+
+# 16) 2^3 * 4
+2^3 * 4
+
+# 17) residuo de la división 7 / 2
+7 %% 2
+
+# 18) cociente de la división 7 / 2
+7 %/% 2
+```
+## Punto 3 - **¿Que hace el código?**
+```{r}
+a <- 1
+b <- 2
+3 -> d
+f <<- 1L
+```
+
+
+```{r}
+# Asignación de valores a variables
+a <- 1          # Se asigna el valor 1 a la variable a
+b <- 2          # Se asigna el valor 2 a la variable b
+3 -> d          # Se asigna el valor 3 a la variable d 
+f <<- 1L       
+
+# Mostrar el valor de a
+a              
+
+# Imprimir el valor de a
+print(a)        
+
+
+# Operaciones con variables
+e <- a + b      # Suma a + by guarda el resultado en e
+(e <- a + b)    # Asigna y al mismo tiempo muestra el resultado
+
+# Mostrar variables creadas
+d               
+f               
+
+
+exists("d")     # TRUE, porque la variable d existe
+exists("zz")    # FALSE, porque la variable zz no ha sido creada
+
+```
+
+## Punto 4 
+
+```{r}
+# Se crea un vector numérico de ejemplo
+x <- c(4, 2, 6, 2, 9, 4)
+
+# Ordena los elementos del vector de menor a mayor
+sort(x)
+
+# Invierte el orden de los elementos del vector
+rev(x)
+
+# Calcula la suma de todos los elementos
+sum(x)
+
+# Calcula el producto de todos los elementos
+prod(x)
+
+# Devuelve la cantidad de elementos del vector
+length(x)
+
+# Devuelve el valor mínimo del vector
+min(x)
+
+# Devuelve el valor máximo del vector
+max(x)
+
+# Devuelve los valores únicos (sin repetir)
+unique(x)
+
+# Indica con TRUE cuáles valores están duplicados
+duplicated(x)
+
+# Asigna rangos según el tamaño de los valores
+rank(x)
+
+# Calcula la suma acumulada del vector
+cumsum(x)
+
+# Calcula el promedio de los valores
+mean(x)
+
+# Calcula la desviación estándar
+sd(x)
+
+# Calcula la varianza
+var(x)
+
+# Muestra un resumen estadístico del vector
+summary(x)
+
+# Verifica si existe algún valor negativo en el vector
+any(x < 0)
+
+# Cuenta la frecuencia de aparición de cada valor
+table(x)
+
+# Toma una muestra aleatoria de tamaño 2 con reemplazo
+sample(x, 2, replace = TRUE)
+
+```
+
+## Punto 5 
+```{r}
+
+1:7                       # Genera números del 1 al 7
+rep("d", 6)               # Repite la letra d seis veces
+rep(1:5, 2)               # Repite la secuencia 1 a 5 dos veces
+rep(1:5, each = 2)        # Repite cada número dos veces
+rep(1:3, each = 3)        # Repite cada número tres veces
+c(1,1,2,3,3,4,5,5)        # Vector creado manualmente
+rep(1:5, each = 2, times = 2)[1:12]  # Repetición controlada
+rep(1:3, each = 2, times = 2)         # Repite patrón
+seq(2, 22, by = 4)        # Secuencia con paso 4
+seq(2.1, 5.1, by = 1)     # Secuencia decimal
+
+```
+
+## Punto 6
+
+```{r}
+
+cola <- c("Carlos", "Paola", "Pedro", "Valeria")  # Cola inicial
+cola <- c(cola, "Maria")                          # Llega Maria
+cola <- cola[cola != "Carlos"]                    # Se va Carlos
+cola <- cola[cola != "Pedro"]                     # Pedro se va
+cola                                                # Cola final
+
+```
+
+## Punto 7
+
+```{r}
+
+ls()               # Lista los objetos en memoria
+Sys.Date()         # Muestra la fecha actual
+Sys.time()         # Muestra fecha y hora actual
+sessionInfo()      # Información de la sesión de R
+
+```
+## Punto 8
+
+```{r}
+
+x <- c(1,1,1,2,2,2,2,3,3)
+
+rle(x)             # Cuenta valores consecutivos repetidos
+NROW(x)            # Número de filas (longitud del vector)
+NCOL(x)            # Número de columnas (1 en vectores)
+
+```
+
+## Punto 9
+
+```{r}
+
+x1 <- c(1,2,3,4,5)
+x2 <- c(6,7,8)
+
+x1 + x2                     # Suma usando reciclaje
+suppressWarnings(x1 + x2)   # Evita advertencias
+
+```
+
+## Punto 10
+
+```{r}
+
+vec <- c(3:8, 1:6, 7)
+
+which.min(vec)
+# Devuelve la posición del valor mínimo del vector
+
+which.max(vec)
+# Devuelve la posición del valor máximo del vector
+
+```
+
+## Punto 11
+
+```{r}
+
+a <- 1:9
+names(a) <- a
+
+outer(a, a, "*")
+# Genera la tabla de multiplicar del 1 al 9
+
+x <- c(TRUE, FALSE)
+names(x) <- x
+
+outer(x, x, "&")
+# Tabla lógica AND
+
+outer(x, x, "|")
+# Tabla lógica OR
+
+```
+
+## Punto 12
+
+```{r}
+
+2/3/4
+# Se evalúa de izquierda a derecha
+
+4^3^2
+# La potencia se evalúa de derecha a izquierda
+
+2 + 3*5
+# La multiplicación tiene prioridad sobre la suma
+
+```
+
+## Punto 13
+
+```{r}
+
+1:10 - 1
+# R resta 1 a cada elemento del vector
+
+1:(10 - 1)
+# Primero evalúa 10 - 1 y luego genera la secuencia
+
+```
+
+## Punto 14
+
+```{r}
+
+a <- 1
+b <- 5
+c <- 6
+
+a + b * (1:c)
+# (1:c) crea un vector
+# b se multiplica por cada elemento
+# a se suma a cada resultado
+
+```
+
+## Punto 15
+
+```{r}
+
+letters
+# Vector base con las letras del alfabeto en minúscula
+
+letters[1:5]
+# Primeros cinco elementos
+
+letters[(length(letters)-3):length(letters)]
+# Cuatro últimos elementos
+
+letters[c(2, 8, length(letters))]
+# Segundo, octavo y último elemento
+
+```
+
+## Punto 16
+
+```{r}
+
+colors()
+# Vector con los nombres de colores disponibles en R
+
+is.vector(colors())
+# Verifica que colors() es un vector
+
+length(colors())
+# Devuelve la cantidad de colores disponibles
+
+head(colors(), 10)
+# Muestra los primeros 10 colores
+
+tail(colors(), 5)
+# Muestra los últimos 5 colores
+
+which(colors() == "purple")
+# Posición del color "purple" en el vector
+
+```
+
+## Punto 17
+
+```{r}
+
+head(colors(), 10)
+# Muestra los primeros 10 colores
+
+tail(colors(), 5)
+# Muestra los últimos 5 colores
+
+which(colors() == "purple")
+# Posición del color "purple" en el vector
+
+```
+
+## Punto 18
+
+```{r}
+
+v2 <- c(1,2,NA,3,5,10,NA)
+
+is.na(v2)
+# Identifica qué elementos del vector son NA
+
+complete.cases(v2)
+# Devuelve TRUE para elementos sin 
+
+```
+
+## Punto 19
+
+```{r}
+
+v3 <- c(2,3,NA,4,5,100,NA,7)
+
+v3 <- v3[!is.na(v3)]
+# Elimina los valores NA utilizando indexación lógica
+
+v3
+# Vector sin valores perdidos
+
+```
+
+## Punto 20
+
+```{r}
+
+v4 <- 4:11
+
+v4 > 5
+# Compara cada elemento del vector con el valor 5
+
+v4[v4 > 5]
+# Extrae solo los valores mayores que 5
+
+v4[c(rep(TRUE,3), rep(FALSE,4), TRUE)]
+# Selección manual usando un vector lógico
+
+```
+
+## Punto 21
+
+```{r}
+
+v5 <- numeric(0)
+# Vector numérico vacío
+
+length(v5)
+# Longitud del vect
+
+v6 <- vector("integer", 7)
+# Vector entero de longitud 7
+
+v6
+
+v7 <- vector("numeric", 10)
+# Vector numérico de longitud 10
+
+v7
+
+v8 <- vector("logical", 5)
+# Vector lógico de longitud 5
+
+v8
+
+```
+
+## Punto 22
+
+```{r}
+
+options(digits = 10)
+# Cambia la cantidad de dígitos que R muestra en pantalla
+
+pi * exp(1)
+# Calcula pi multiplicado por e
+
+pi
+# Muestra el valor de pi
+
+round(pi, 5)
+# Redondea pi a 5 decimales
+
+ceiling(pi)
+# Redondea pi hacia arriba
+
+floor(pi)
+# Redondea pi hacia abajo
+
+round(seq(1, 2, 0.1))
+# Genera una secuencia y redondea sus valores
+
+```
+
+## Punto 23
+
+```{r}
+
+options(digits = 10)
+# Cambia la cantidad de dígitos que R muestra en pantalla
+
+pi * exp(1)
+# Calcula pi multiplicado por e
+
+pi
+# Muestra el valor de pi
+
+```
+
+## Punto 24
+
+```{r}
+
+which(LETTERS == "V")
+# Devuelve la posición de la letra V en el vector LETTERS
+
+```
+
+## Punto 26
+
+- El punto 25 se omite por que son comandos que hacen parte de la consola.
+
+```{r}
+
+class(NA)
+# Valor ausente
+
+class(Inf)
+# Infinito
+
+class(NaN)
+# Resultado indefinido
+
+class(NULL)
+# Objeto NULL
+
+class(TRUE)
+# Valor lógico
+
+```
+
+## Punto 27
+
+```{r}
+
+typeof(NA)
+# Tipo del valor NA
+
+typeof(Inf)
+# Tipo del infinito
+
+typeof(NaN)
+# Tipo de valor no numérico
+
+typeof(NULL)
+# Tipo del objeto NULL
+
+typeof(TRUE)
+# Tipo lógico
+
+```
+
+## Punto 28
+
+```{r}
+
+mode(NA)
+# Modo del valor NA
+
+mode(Inf)
+# Modo del infinito
+
+mode(NaN)
+# Modo de un valor indefinido
+
+mode(NULL)
+# Modo del objeto NULL
+
+mode(TRUE)
+# Modo de un valor lógico
+
+```
+
+## Punto 29
+
+```{r}
+
+# 1. Todo entero se puede convertir en carácter
+as.character(10)
+# Verdadero
+
+# 2. Todo carácter se puede convertir en numérico
+as.numeric("abc")
+# Falso: produce NA
+
+# 3. Un lógico se puede convertir en numérico
+as.numeric(TRUE)
+# Verdadero: TRUE = 1, FALSE = 0
+
+# 4. Un lógico se puede convertir en carácter
+as.character(FALSE)
+# Verdadero
+
+```
+## Punto 30
+
+```{r}
+
+x1 <- 1:200
+
+x1[!(x1 %% 2 == 0) & !(x1 %% 3 == 0) & !(x1 %% 7 == 0)]
+# Extrae los números que no son divisibles por 2, 3 ni 7
+
+```
+
+## Punto 31
+
+```{r}
+
+zz <- c(9:12, 1:5, 3:7, 0:6)
+
+zz
+# Vector original
+
+duplicated(zz)
+# Identifica los valores repetidos
+
+zz[!duplicated(zz)]
+# Extrae solo los valores únicos conservando el orden
+
+```
+
+## Punto 32
+
+- Debemos primero instalar el paquete para poder realizar el código.
+
+```{r}
+
+library(leaflet)
+
+m <- leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng = -74.056159, lat = 4.656844,
+             popup = "Universidad Santo Tomás")
+
+m
+
+```
+
+## Punto 33
+
+```{r}
+
+library(micEcon)
+# Carga el paquete micEcon
+
+data(package = "micEcon")
+# Muestra los conjuntos de datos del paquete
+
+help(Missong03E7)
+# Muestra la ayuda del conjunto de datos
+
+ls("package:micEcon")
+# Muestra las funciones del paquete
+
+detach("package:micEcon")
+# Desactiva el paquete micEcon
+
+vignette(package = "knitr")
+# Lista las viñetas del paquete knitr
+
+vignette("knitr-markdown", package = "knitr")
+# Abre la viñeta knitr-markdown
+
+```
+
+## Punto 34
+
+```{r}
+
+matrix(c(1, sqrt(5), -2, 0), nrow = 2)
+# Crea una matriz 2x2
+
+matrix(1:6, nrow = 3)
+# Crea una matriz 3x2
+
+matrix(0, 3, 3)
+# Matriz 3x3 de ceros
+
+diag(1, 3, 3)
+# Matriz identidad 3x3
+
+```
+
+## Punto 35
+
+```{r}
+ 
+
+A <- matrix(c(4, -5, -0.3, 2.7), 2, 2)
+rownames(A) <- c("F1", "F2")
+colnames(A) <- c("C1", "C2")
+A
+# Matriz con nombres de filas y columnas
+
+B <- matrix(c(3, -8, 1, -0.5, 1.7, 3, 0.8, 1.25, 2), 3, 3)
+rownames(B) <- c("R1", "R2", "R3")
+colnames(B) <- c("C1", "C2", "C3")
+B
+# Matriz nombrada
+
+
+```
+
+## Punto 36
+
+```{r}
+
+length(A)
+# Cantidad total de elementos
+
+dim(A)
+# Dimensiones de la matriz
+
+det(A)
+# Determinante de la matriz
+
+diag(A)
+# Diagonal de la matriz
+
+prod(A)
+# Producto de los elementos
+
+min(A)
+# Valor mínimo
+
+max(A)
+# Valor máximo
+
+mean(A)
+# Promedio
+
+sd(A)
+# Desviación estándar
+
+var(A)
+# Varianza
+
+t(A)
+# Matriz transpuesta
+
+eigen(t(A) %*% A)
+# Valores propios de A transpuesta por A
+
+
+```
+
+## Punto 37
+
+```{r}
+
+
+m2 <- numeric(9)
+m2
+# Vector numérico de longitud 9 inicializado en ceros
+
+is.vector(m2)
+# Verifica que m2 es un vector
+
+attributes(m2)
+# No tiene atributos especiales
+
+dim(m2) <- c(3,3)
+m2
+# El vector se convierte en matriz 3x3
+
+attributes(m2)
+# Ahora tiene dimensiones
+
+m3 <- matrix(0, 4, 4)
+m3
+# Matriz 4x4 llena de ceros
+
+```
+
+## Punto 38
+
+```{r}
+
+A <- matrix(1:6, 3, 2)
+B <- matrix(2:7, 3, 2)
+
+cbind(A, B)
+# Une matrices por columnas
+
+rbind(A, B)
+# Une matrices por filas
+
+```
+
+## Punto 39
+
+```{r}
+
+M <- matrix(1:16, 4, 4)
+
+M[2,3]
+# Elemento en la fila 2, columna 3
+
+M[11:12]
+# Elementos 11 y 12 del vector interno
+
+M[2,]
+# Segunda fila
+
+M[,3]
+# Tercera columna
+
+M[,c(1,4)]
+# Primera y cuarta columnas
+
+M[c(2,3),]
+# Segunda y tercera filas
+
+M[c(1,2), c(3,4)]
+# Submatriz filas 1–2 y columnas 3–4
+
+```
+
+## Punto 40
+
+```{r}
+
+M[c(13,14)]
+# Extrae los elementos 13 y 14 del vector interno
+
+M[4,]
+# Extrae la cuarta fila
+
+M[,2]
+# Extrae la segunda columna
+
+M[c(1,2), c(3,4)]
+# Extrae submatriz específic
+
+```
+
+## Punto 41
+
+```{r}
+
+A <- matrix(c(1,-3,2, 2,4,0, -0.5,-1.5,-1), 3, 3)
+B <- matrix(c(3,1.1,1.1, -1.5,-0.7,-1, 1.1,1.6,0.3), 3, 3)
+
+A * B
+# Producto elemento a elemento
+
+t(A)
+# Transpuesta de A
+
+t(B) %*% t(A)
+# Producto matricial
+
+solve(t(A) %*% A)
+# Inversa de A' * A
+
+B %*% t(B) + t(A) %*% A
+# Suma de productos matriciales
+
+```
+
+## Punto 42
+
+```{r}
+A <- matrix(c(3,1, 1,-1), 2, 2)
+B <- matrix(c(11,-1), 2, 1)
+solve(A, B)# Solución del sistema de ecuaciones
+```
+
+## Punto 43
+
+```{r}
+
+lista1 <- list(
+  persona = "Carlos",
+  vector = c(pi, exp(1)),
+  matriz = matrix(16:1, 4, 4),
+  arreglo = array(24:1, c(2,3,4))
+)
+
+lista1$matriz[2,2]
+# Elemento (2,2) de la matriz
+
+lista1$arreglo[2,2,2]
+# Elemento (2,2,2) del arreglo
+
+lista1[[1]]
+# Primer elemento de la lista
+
+lista1[[3]][3,3]
+# Elemento (3,3) de la matriz
+
+lista1$arreglo
+# Arreglo completo
+
+lista1[["matriz"]]
+# Matriz completa
+
+```
+## Punto 44
+
+```{r}
+
+ip <- installed.packages()
+attributes(ip)
+# Atributos del objeto
+
+rownames(ip)
+# Nombres de los paquetes
+
+length(ip)
+# Número de paquetes instalado
+
+```
+
+## Punto 45
+
+```{r}
+
+month.abb
+# Abreviaturas de los meses
+
+month.name
+# Nombres de los meses
+
+st1 <- ts(rnorm(38), start = c(2020,3), frequency = 12)
+st1
+ts.plot(st1)
+
+```
+
+## Punto 46
+
+```{r}
+
+ts1 <- ts(rnorm(20), start = 2011, frequency = 2)
+# Serie semestral
+
+ts2 <- ts(rnorm(15), start = 2014, frequency = 2)
+# Serie bianual
+
+ts3 <- ts(rnorm(48), start = c(2015,1), frequency = 12)
+window(ts3, start = c(2017,1), end = c(2017,12))
+# Extrae datos del año 2017
+
+```
+
